@@ -1,0 +1,158 @@
+/*
+If someone has achieved it before, it means it's possible.
+Every accepted solution was once a wrong answer.
+The expert in anything was once a beginner.
+*/
+#include <bits/stdc++.h>
+using namespace std;
+#define fast_io ios::sync_with_stdio(false);cin.tie(nullptr);
+
+#define all(v) (v).begin(), (v).end()
+#define rall(v) (v).rbegin(), (v).rend()
+
+#define srt(v) sort(all(v))
+#define rsrt(v) sort(rall(v))
+#define rev(v) reverse(all(v))
+
+#define ll long long
+#define no cout<< "NO"<<endl;
+#define yes cout<<"YES"<<endl;
+#define pans cout<<ans<<endl;
+#define pcnt cout<<cnt<<endl;
+
+#define iv(v,n) vector<int>v(n); f(i,0,n) cin>>v[i]
+#define f(i, a, b) for (int i = a; i < b; i++)
+const int mod=1e9+7 ;
+                
+
+class SegmentTree {
+public:
+int n;
+vector<long long> seg;
+
+SegmentTree(int sz) {
+    n = sz;
+    seg.assign(4 * n, 0);
+}
+
+void update(int idx, int l, int r, int pos, ll val) {
+    if (l == r) {
+        seg[idx] = val;
+        return;
+    }
+    
+    int mid = (l + r) / 2;
+    
+    if (pos <= mid)
+    update(2 * idx+1, l, mid, pos, val);
+    else
+    update(2 * idx+2, mid + 1, r, pos, val);
+    
+    seg[idx] = seg[2 * idx+1] + seg[2 * idx+2];
+}
+
+long long query(int idx, int l, int r, int ql, int qr) {
+    if (r < ql || l > qr)
+    return 0;
+    
+    if (ql <= l && r <= qr)
+    return seg[idx];
+    
+    int mid = (l + r) / 2;
+    
+    return query(2 * idx+1, l, mid, ql, qr) +
+    query(2 * idx + 2, mid + 1, r, ql, qr);
+}
+
+void set(int pos, long long val) {
+    update(0, 0, n - 1, pos, val);
+}
+
+ll  rangeSum(int l, int r) {
+    return query(0, 0, n - 1, l, r);
+}
+};
+
+vector<vector<int>>adj;
+vector<int> start;
+vector<int> finish;
+int timer = 0;
+vector<int>colors;
+set<int>st;
+
+void euler_tour(int node, int parent,vector<int>&values) {
+    start[node] = timer++;
+
+    for (int nxt : adj[node]) {
+        if (nxt != parent)
+            euler_tour(nxt, node,values);
+    }
+
+    finish[node] = timer;
+    st.insert(values[node]);
+    colors[node]=st.size();
+}
+
+
+void Testcases()
+{
+    int n,q;
+    cin>>n>>q;
+
+    iv(values,n);
+
+    adj.resize(n);
+
+    for (int i = 0; i < n - 1; i++) {
+        int u, v;
+        cin >> u >> v;
+        --u;
+        --v;
+        adj[u].push_back(v);
+        adj[v].push_back(u);
+    }
+
+    start.resize(n);
+    finish.resize(n);
+    colors.resize(n);
+
+    euler_tour(0, -1,values);
+
+    // SegmentTree seg(n);
+
+    // for (int i = 0; i < n; i++) {
+    //     seg.set(start[i], values[i]);
+    // }
+
+    // while (q--) {
+    //     int type;
+    //     cin >> type;
+
+    //     if (type == 1) {
+    //         int node, val;
+    //         cin >> node >> val;
+    //         --node;
+
+    //         seg.set(start[node], val);
+    //     }
+    //     else {
+    //         int node;
+    //         cin >> node;
+    //         --node;
+
+    //         cout << seg.rangeSum(start[node], finish[node] - 1) << '\n';
+    //     }
+    // }
+
+    for(auto&x:colors) cout<<x<<" ";
+    cout<<"\n";
+}
+int main()
+{
+    fast_io;
+    int tt=1;
+    while(tt--)
+    {
+        Testcases();
+    }
+}
