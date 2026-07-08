@@ -19,16 +19,39 @@ void solve()
 {
     ll n;
     cin>>n;
-    ll cnt=0;
-    for(ll i=1;i<=n;i++){
-        ll k=i;
-    while(k){
-        k=k&(k-1);
-        cnt++;
+
+    ll ans=0;
+    vector<int>arr(8);
+    arr[0]=1;
+    arr[1]=1;
+    arr[2]=2;
+    arr[3]=1;
+    arr[4]=2;
+    arr[5]=2;
+    arr[6]=3;
+    arr[7]=1;
+
+    vector<ll>pref(8);
+    pref[0]=arr[0];
+    f(i,1,8){
+        pref[i]=pref[i-1]+arr[i];
     }
+
+    if(n<=8) {
+        cout<<pref[n-1];
+        return ;
+    }
+
+    ll val=n/8LL;
+    ll rem=n%8;
+
+    ans+=(1LL*val*pref[7]);
+    ans+=8*(val-1);
+    if(rem!=0 ) ans+=1LL*pref[rem-1]+rem;
+
+    cout<<ans<<"\n";
 }
-    cout<<cnt<<"\n";
-}
+
 int main()
 {
     fast_io;
@@ -37,5 +60,5 @@ int main()
     while(tt--)
     {
         solve();
-    }
+    }   
 }
