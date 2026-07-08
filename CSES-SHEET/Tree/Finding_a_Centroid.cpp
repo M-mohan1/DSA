@@ -23,59 +23,54 @@ using namespace std;
 #define iv(v,n) vector<int>v(n); f(i,0,n) cin>>v[i]
 #define f(i, a, b) for (int i = a; i < b; i++)
 const int mod=1e9+7 ;
-
+                
+int N;
 vector<vector<int>>adj;
-vector<set<int>>subtree_colors;
-vector<int>ans;
+vector<int>Size;
 
-void dfs(int u, int p,vector<int>&colors) {
-    subtree_colors[u].insert(colors[u]);
-    
-    for (int v : adj[u]) {
-        if (v == p) continue;
-        
-        dfs(v, u,colors);
-        
-        if (subtree_colors[v].size() > subtree_colors[u].size()) {
-            swap(subtree_colors[u], subtree_colors[v]);
-        }
-        
-        for (auto &color : subtree_colors[v]) {
-            subtree_colors[u].insert(color);
-        }
+void dfs_sz(int u,int parent){
+    Size[u]=1;
+    for(auto &v:adj[u]){
+        if(v==parent) continue;
+        dfs_sz(v,u);
+        Size[u]+=Size[v];
 
-        subtree_colors[v].clear(); 
     }
-    
-    ans[u] = subtree_colors[u].size();
 }
-void Testcases(){
 
+int get_centroid(int u,int parent){
+
+    for(auto &v:adj[u]){
+        if(v!=parent && Size[v]>N/2){
+            return get_centroid(v,u);
+        }
+    }
+    return u;
+}
+
+void Testcases()
+{
     int n;
     cin>>n;
+    N=n;
 
-    iv(colors,n);
     adj.resize(n);
-
-    for (int i = 0; i < n - 1; i++) {
-        int u, v;
-        cin >> u >> v;
+    for(int i=1;i<=n-1;i++){
+        int u,v;
+        cin>>u>>v;
         --u;
         --v;
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
 
-    ans.resize(n);
-    subtree_colors.resize(n);
+    Size.resize(n);
 
-    dfs(0, -1,colors);
+    dfs_sz(0,-1);
+    cout<<get_centroid(0,-1)+1<<"\n";
 
-    for (int i = 0; i < n; i++) {
-        cout << ans[i] <<" ";
-    }
-    cout << "\n";
 }
+
 int main()
 {
     fast_io;

@@ -26,6 +26,18 @@ const int mod=1e9+7 ;
                 
 int N;
 vector<vector<int>>adj;
+vector<ll>dist;
+
+
+void  dfs(int u,int parent,int d){
+
+    dist[u]=d;
+    for(auto &v:adj[u]){
+        if(v==parent) continue;
+        dfs(v,u,d+1);
+    }
+}
+
 void Testcases()
 {
     int n;
@@ -42,6 +54,42 @@ void Testcases()
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
+
+    dist.assign(n,0);
+    dfs(0,-1,0);
+
+    int end1=-1;
+    ll maxi=-1;
+
+    f(i,0,n){
+        if(dist[i]>maxi){
+            maxi=dist[i];
+            end1=i;
+        }
+    }
+
+    dist.assign(n,0);
+    dfs(end1,-1,0);
+    vector<ll>dist_end1=dist;
+
+    int end2=-1;
+    maxi=-1;
+
+    f(i,0,n){
+        if(dist[i]>maxi){
+            maxi=dist[i];
+            end2=i;
+        }
+    }
+
+    dist.assign(n,0);
+    dfs(end2,-1,0);
+    vector<ll>dist_end2=dist;
+
+    for(int i=0;i<n;i++) {
+        cout<<max(dist_end1[i],dist_end2[i])<<" ";
+    }
+    cout<<"\n";
 
 }
 int main()

@@ -24,15 +24,30 @@ using namespace std;
 #define f(i, a, b) for (int i = a; i < b; i++)
 const int mod=1e9+7 ;
                 
+vector<vector<int>>adj;
+vector<bool>vis;
+int ans ;
 
-void dfs(int u ,vector<vector<int>>&adj,vector<int>&vis){
+void dfs(int u,int parent){
     
+    for(auto &v:adj[u]){
+        if(v!=parent){
+            dfs(v,u);
+
+            if(!vis[v] && !vis[u]){
+                ans++;
+                vis[u]=vis[v]=1;
+            }
+        }
+    }
 }
+
 void Testcases()
 {
     int n;
     cin>>n;
-    vector<vector<int>>adj(n);
+
+    adj.resize(n);
     for(int i=1;i<n;i++){
         int u,v;
         cin>>u>>v;
@@ -42,10 +57,12 @@ void Testcases()
         adj[v].push_back(u);
     }
 
-    int ans=0;
-    vector<int>vis(n,0);
-    dfs(0,adj,vis);
+    vis.assign(n,0);
+    dfs(0,-1);
+
+    cout<<ans<<"\n";
 }
+
 int main()
 {
     fast_io;
