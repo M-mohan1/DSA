@@ -38,23 +38,20 @@ void Testcases()
         arr[i]=(arr[i-1]*a+b)%c;
     }
 
-    priority_queue<pair<int,int>,vector<pair<int,int>>,greater<>>pq;
-
-    f(i,0,k)
-        pq.push({arr[i], i});
+    deque<pair<int,int>>q;
 
     ll ans = 0;
-    ans ^= pq.top().first;
+    int j=0;
+    for(int i=0;i<n;i++){
+        while(!q.empty() && q.back().first>arr[i]) q.pop_back();
+        q.push_back({arr[i],i});
 
-    int j = 1; 
-
-    for(int i = k; i < n; i++, j++)
-    {
-        pq.push({arr[i], i});
-        while(!pq.empty() && pq.top().second < j)
-            pq.pop();
-
-        ans ^= pq.top().first;
+        if(i-j+1<k) continue;
+        else{
+            ans=ans^q.front().first;
+            if(q.front().second==j) q.pop_front();
+            j++;
+        }
     }
 
     cout << ans << "\n";
