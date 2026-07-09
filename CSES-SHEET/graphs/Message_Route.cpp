@@ -30,11 +30,11 @@ void Testcases()
     }
 
     vector<int>parent(n,-1);
-    vector<int>dis(n,1e9);
+    vector<bool>vis(n,0);
 
     queue<int>q;
     q.push(0);
-    dis[0]=0;
+    vis[0]=1;
     parent[0]=-1;
 
     while(!q.empty()){
@@ -46,15 +46,15 @@ void Testcases()
         }
 
         for(int &it:adj[u]){
-            if(dis[it]==1e9){
+            if(!vis[it]){
                 parent[it]=u;
-                dis[it]=dis[u]+1;
+                vis[it]=1;
                 q.push(it);
             }
         }
     }
 
-    if(dis[n-1]==1e9) cout<<"IMPOSSIBLE\n";
+    if(!vis[n-1]) cout<<"IMPOSSIBLE\n";
     else{
         vector<int>path;
         int curr=n-1;

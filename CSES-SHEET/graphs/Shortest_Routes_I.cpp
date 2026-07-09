@@ -16,9 +16,9 @@ int binS(vector<int>&a,int t){ int s=0,e=a.size()-1; while(s<=e){ int m=(s+e)/2;
 int power(int a,int b){ int r=1; while(b>0){ if(b&1) r*=a; a*=a; b>>=1;} return r; }
 const int mod=1e9+7 ;
                 
-int n,m;
 void Testcases()
 {
+    int n,m;
     cin>>n>>m;
     vector<vector<pair<int,int>>>adj(n);
 
