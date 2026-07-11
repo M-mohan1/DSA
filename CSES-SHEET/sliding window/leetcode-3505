@@ -1,6 +1,9 @@
 
 // very nice problem 
 
+#include <bits/stdc++.h>
+using namespace std;
+
 class Solution {
     using ll=long long ;
 public:
