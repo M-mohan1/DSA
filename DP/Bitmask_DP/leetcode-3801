@@ -1,0 +1,55 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+class Solution {
+public:
+
+    long long minMergeCost(vector<vector<int>>& lists) {
+        int n=lists.size();
+
+        int mask=1<<n;
+        vector<int>length(mask);
+        vector<int>median(mask);
+
+        for(int i=1;i<mask;i++){
+            vector<int>merged;
+
+            for(int j=0;j<n;j++){
+                if(i & (1<<j)){
+                    merged.insert(merged.end(),lists[j].begin(),lists[j].end());
+                }
+            }
+
+            sort(merged.begin(),merged.end());
+
+            int idx=(merged.size()-1)/2;
+            median[i]=merged[idx];
+            length[i]=merged.size();
+        }
+
+        vector<long long>dp(mask,LLONG_MAX);
+
+        for (int i = 0; i < n; ++i) {
+            dp[1 << i] = 0;
+        }
+        
+
+        for (int i = 1; i < mask;i++) {
+            if (__builtin_popcount(i) == 1) continue;
+            
+            long long minCost = LLONG_MAX;
+            
+            for (int sub = (i - 1) & i; sub > 0; sub = (sub - 1) & i) {
+                int other = i ^ sub;
+
+                long long currentMergeCost = length[i] + abs(median[sub] - median[other]);
+                long long totalCost = dp[sub] + dp[other] + currentMergeCost;
+                
+                minCost = min(minCost, totalCost);
+            }
+            
+            dp[i] = minCost;
+        }
+        return dp[mask-1] ;
+    }
+};
