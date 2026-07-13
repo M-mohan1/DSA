@@ -134,9 +134,6 @@ void Testcases()
             cin >> node >> val;
             --node;
 
-            euler[start[node]] = val;
-            euler[finish[node]] = -val;
-
             seg.set(start[node], val);
             seg.set(finish[node], -val);
         }
