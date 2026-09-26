@@ -28,35 +28,8 @@ void Testcases()
 {
     int n;
     cin>>n;
-    iv(arr,n);
 
-    vector<int>basis(32,0);
-
-    for(int i=0;i<n;i++){
-        int val=arr[i];
-        for(int bit=31;bit>=0;bit--){
-            if((val >> bit) & 1){
-                if(!basis[bit]){
-                    basis[bit]=val;
-                    break;
-                }
-                else{
-                    val^=basis[i];
-                }
-            }
-        }
-    }
-
-    int max_xor = 0;
-    for (int bit = 31; bit >= 0; bit--) {
-        if ((max_xor ^ basis[bit]) > max_xor) {
-            max_xor ^= basis[bit];
-        }
-    }
-
-    cout << max_xor << "\n";
-
-    
+    cout<<n/5<<"\n";
 }
 int main()
 {

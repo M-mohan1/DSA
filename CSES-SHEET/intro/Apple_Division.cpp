@@ -24,39 +24,32 @@ using namespace std;
 #define f(i, a, b) for (int i = a; i < b; i++)
 const int mod=1e9+7 ;
                 
+ll ans = LLONG_MAX;
+ll total = 0;
+
+void solve(int i, long long sum,vector<int>&a) {
+    if (i == a.size()) {
+        ans = min(ans, abs(total - 2 * sum));
+        return;
+    }
+
+    solve(i + 1, sum,a);           
+    solve(i + 1, sum + a[i],a);  
+}
+
 void Testcases()
 {
     int n;
     cin>>n;
+
     iv(arr,n);
 
-    vector<int>basis(32,0);
+    total=accumulate(arr.begin(),arr.end(),0LL);
 
-    for(int i=0;i<n;i++){
-        int val=arr[i];
-        for(int bit=31;bit>=0;bit--){
-            if((val >> bit) & 1){
-                if(!basis[bit]){
-                    basis[bit]=val;
-                    break;
-                }
-                else{
-                    val^=basis[i];
-                }
-            }
-        }
-    }
+    solve(0,0,arr);
+    cout<<ans<<"\n";
 
-    int max_xor = 0;
-    for (int bit = 31; bit >= 0; bit--) {
-        if ((max_xor ^ basis[bit]) > max_xor) {
-            max_xor ^= basis[bit];
-        }
-    }
 
-    cout << max_xor << "\n";
-
-    
 }
 int main()
 {

@@ -12,7 +12,6 @@ using namespace std;
 
 #define srt(v) sort(all(v))
 #define rsrt(v) sort(rall(v))
-#define rev(v) reverse(all(v))
 
 #define ll long long
 #define no cout<< "NO"<<endl;
@@ -26,37 +25,52 @@ const int mod=1e9+7 ;
                 
 void Testcases()
 {
-    int n;
-    cin>>n;
-    iv(arr,n);
+    string s;
+    cin>>s;
 
-    vector<int>basis(32,0);
+    int n=s.length();
 
-    for(int i=0;i<n;i++){
-        int val=arr[i];
-        for(int bit=31;bit>=0;bit--){
-            if((val >> bit) & 1){
-                if(!basis[bit]){
-                    basis[bit]=val;
-                    break;
-                }
-                else{
-                    val^=basis[i];
-                }
-            }
+    vector<int> cnt(26, 0);
+
+    for (char ch : s)
+        cnt[ch - 'A']++;
+
+
+    int odd = 0;
+    char mid = '#';
+
+    for (int i = 0; i < 26; i++) {
+
+        if (cnt[i] % 2) {
+            odd++;
+            mid = 'A' + i;
         }
     }
 
-    int max_xor = 0;
-    for (int bit = 31; bit >= 0; bit--) {
-        if ((max_xor ^ basis[bit]) > max_xor) {
-            max_xor ^= basis[bit];
+    if (odd > 1)
+        {
+            cout<<"NO SOLUTION";
+            return ;
+        }
+
+
+    string half = "";
+    for (int i = 0; i < 26; i++){
+        int len=cnt[i]/2;
+
+        while(len--){
+            half.push_back('A'+i);
         }
     }
 
-    cout << max_xor << "\n";
+    string rev= half;
+    reverse(rev.begin(),rev.end());
 
-    
+    if(odd==1) half.push_back(mid);
+
+    half+=rev;
+
+    cout<<half<<"\n";
 }
 int main()
 {

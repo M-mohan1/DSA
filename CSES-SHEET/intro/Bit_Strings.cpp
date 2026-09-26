@@ -24,39 +24,22 @@ using namespace std;
 #define f(i, a, b) for (int i = a; i < b; i++)
 const int mod=1e9+7 ;
                 
+int power(int n){
+    int ans =2;
+    n--;
+
+    while(n--){
+        ans =(ans*2)%mod;
+    }
+
+    return ans ;
+}
 void Testcases()
 {
     int n;
     cin>>n;
-    iv(arr,n);
 
-    vector<int>basis(32,0);
-
-    for(int i=0;i<n;i++){
-        int val=arr[i];
-        for(int bit=31;bit>=0;bit--){
-            if((val >> bit) & 1){
-                if(!basis[bit]){
-                    basis[bit]=val;
-                    break;
-                }
-                else{
-                    val^=basis[i];
-                }
-            }
-        }
-    }
-
-    int max_xor = 0;
-    for (int bit = 31; bit >= 0; bit--) {
-        if ((max_xor ^ basis[bit]) > max_xor) {
-            max_xor ^= basis[bit];
-        }
-    }
-
-    cout << max_xor << "\n";
-
-    
+    cout<<power(n);
 }
 int main()
 {

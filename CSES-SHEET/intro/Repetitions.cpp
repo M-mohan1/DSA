@@ -26,37 +26,24 @@ const int mod=1e9+7 ;
                 
 void Testcases()
 {
-    int n;
-    cin>>n;
-    iv(arr,n);
+    string s ;
+    cin>>s;
 
-    vector<int>basis(32,0);
+    int n=s.length();
 
-    for(int i=0;i<n;i++){
-        int val=arr[i];
-        for(int bit=31;bit>=0;bit--){
-            if((val >> bit) & 1){
-                if(!basis[bit]){
-                    basis[bit]=val;
-                    break;
-                }
-                else{
-                    val^=basis[i];
-                }
-            }
+    int ans =0;
+
+    int i=0;
+    while(i<n){
+        int j=i+1;
+        while(j<n && s[j]==s[i]){
+            j++;
         }
+        ans=max(ans,j-i);
+        i=j;
     }
 
-    int max_xor = 0;
-    for (int bit = 31; bit >= 0; bit--) {
-        if ((max_xor ^ basis[bit]) > max_xor) {
-            max_xor ^= basis[bit];
-        }
-    }
-
-    cout << max_xor << "\n";
-
-    
+    cout<<ans<<"\n";
 }
 int main()
 {
